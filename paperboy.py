@@ -24,36 +24,45 @@ class Paperboy:
 # quota
 # This method should calculate and return the paperboy's quota for his next delivery
     def quota(self):
-        return 50 + (self.experience/2)
+        if self.experience == 0:
+            return 50
+        else:
+            return 50 + (self.experience/2)
 # deliver(self, start_address, end_address)
 # This method will take two house numbers and return the amount of money earned on this delivery as a floating point number. It should also update the paperboy's experience!
     def deliver(self, start_address, end_address):
         if end_address-start_address < self.quota():
             print(f"{self.name} you did not meet your quota today, you have lost $2")
-            self.earnings += (0.25*(end_address-start_address))
+            self.earnings += (0.25*(end_address-start_address+1))
             self.earnings -= 2.0
-            self.experience += (end_address-start_address)
+            self.experience += (end_address-start_address+1)
         elif end_address-start_address == self.quota():
-            self.earnings += (0.25*(end_address-start_address))
-            self.experience += (end_address-start_address)
+            self.earnings += (0.25*(end_address-start_address+1))
+            self.experience += (end_address-start_address+1)
         else:
-            self.earnings += (0.25*(end_address-start_address))
-            self.earnings += (0.25*(end_address-start_address-self.quota()))
-            self.experience += (end_address-start_address)
+            self.earnings += (0.25*(end_address-start_address+1))
+            self.earnings += (0.25*(end_address-start_address-self.quota()+1))
+            self.experience += (end_address-start_address+1)
 # Let's assume that the start_address is always a smaller number than the end_address
 # As a stretch exercise you can figure out how to ensure it still works if the above assumption isn't met!
-
+    def report(self):
+        return('I\'m {}, I\'ve delivered {} papers and I\'ve earned ${} so far!'.format(self.name, self.experience, self.earnings))
 # report
 # This method should return a string about the paperboy's performance
 # e.g. "I'm Tommy, I've delivered 90 papers and I've earned $38.25 so far!"
 
 tommy = Paperboy('Tommy')
-print(tommy)
-tommy.deliver(0,50)
-print(tommy)
+print(tommy.quota())
+tommy.deliver(101,160)
+print(tommy.earnings)
+print(tommy.report())
 
-tommy.deliver(0,80)
-print(tommy)
+print(tommy.quota())
+tommy.deliver(1,75)
+print(tommy.earnings)
+print(tommy.report())
 
-tommy.deliver(0,20)
-print(tommy)
+
+
+
+
